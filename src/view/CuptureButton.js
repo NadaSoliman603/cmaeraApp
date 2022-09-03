@@ -112,14 +112,11 @@ const CuptureButton = ({
           onStoppedRecording();
         },
       });
-      // TODO: wait until startRecording returns to actually find out if the recording has successfully started
-      console.log('called startRecording()!');
       isRecording.current = true;
     } catch (e) {
       console.error('failed to start recording!', e, 'camera');
     }
   }, [camera, flash, onMediaCaptured, onStoppedRecording]);
-  //#endregion
 
   const tapHandler = useRef();
   const onHandlerStateChanged = useCallback(
@@ -181,7 +178,6 @@ const CuptureButton = ({
     [isPressingButton, recordingProgress, setIsPressingButton, startRecording, stopRecording, takePhoto],
   );
 
-   //#region Pan handler
 
    const onPanGestureEvent = useAnimatedGestureHandler({
     onStart: (event, context) => {
@@ -189,7 +185,6 @@ const CuptureButton = ({
       const yForFullZoom = context.startY * 0.7;
       const offsetYForFullZoom = context.startY - yForFullZoom;
 
-      // extrapolate [0 ... 1] zoom -> [0 ... Y_FOR_FULL_ZOOM] finger position
       context.offsetY = interpolate(cameraZoom.value, [minZoom, maxZoom], [0, offsetYForFullZoom], Extrapolate.CLAMP);
     },
     onActive: (event, context) => {
@@ -202,7 +197,6 @@ const CuptureButton = ({
   });
 
   const panHandler = useRef();
-  //#endregion
 
   const shadowStyle = useAnimatedStyle(
     () => ({
@@ -263,7 +257,7 @@ const CuptureButton = ({
       ref={tapHandler}
       onHandlerStateChange={onHandlerStateChanged}
       shouldCancelWhenOutside={false}
-      maxDurationMs={99999999} // <-- this prevents the TapGestureHandler from going to State.FAILED when the user moves his finger outside of the child view (to zoom)
+      maxDurationMs={99999999} 
       simultaneousHandlers={panHandler}>
       <Reanimated.View 
         {...props}
@@ -279,7 +273,9 @@ const CuptureButton = ({
           <Reanimated.View style={styles.flex}>
             <Reanimated.View style={[styles.shadow, shadowStyle]} />
             <Pressable onPress ={onHandlerStateChanged}>
-            <View style={styles.button}  />
+            <View style={styles.button}  >
+              <Text style={styles.logoText}>Logo</Text>
+            </View>
             </Pressable>
           </Reanimated.View>
         </PanGestureHandler>
@@ -306,7 +302,13 @@ const styles = StyleSheet.create({
     borderRadius: CAPTURE_BUTTON_SIZE / 2,
     borderWidth: BORDER_WIDTH,
     borderColor: 'red',
+    flex:1,
+    justifyContent:"center",
+    alignItems:"center"
   },
+  logoText:{
+    color:"red",
+  }
 });
 
 

@@ -49,10 +49,9 @@ const CameraScreen = ({navigation}) => {
     return device.formats.sort(sortFormats);
   }, [device?.formats]);
   const [is60Fps, setIs60Fps] = useState(true);
-  //#endregion
+  
   const fps =  useFBS({ supportsLowLightBoost:device?.supportsLowLightBoost,  enableHdr,  enableNightMode,  formats,  is60Fps, device})
   const {supportsCameraFlipping,supportsHdr,supports60Fps,canToggleNightMode,supportsFlash,} = useSupports({device, formats , enableNightMode, fps})
-  //#endregion
 
   const format = useMemo(() => {
     let result = formats;
@@ -239,7 +238,7 @@ const CameraScreen = ({navigation}) => {
             {'\n'}FPS
           </Text>
         </PressableOpacity>
-        )}
+         )} 
 
       {supportsHdr && (
         <PressableOpacity style={styles.button} onPress={() => setEnableHdr((h) => !h)}>
@@ -250,7 +249,7 @@ const CameraScreen = ({navigation}) => {
         <PressableOpacity style={styles.button} onPress={() => setEnableNightMode(!enableNightMode)} disabledOpacity={0.4}>
           <IonIcon name={enableNightMode ? 'moon' : 'moon-outline'} color="white" size={24} />
         </PressableOpacity>
-     )} 
+      )}  
     </View>
   </View>
   );
